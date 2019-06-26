@@ -10,11 +10,11 @@
 const randomFreeTone = (tonesArray, socketId) => {
   let tone = tonesArray[Math.floor(Math.random() * tonesArray.length)];
   if (tone.socket) {
-    console.log(tone.name + " taken, re-running");
+    console.log(tone.tone + " taken, re-running");
     return randomFreeTone(tonesArray, socketId);
   } else {
     tone.socket = socketId;
-    console.log("assigned tone " + tone.name + " to " + socketId);
+    console.log("assigned tone " + tone.tone + " to " + socketId);
     return tone;
   }
 };
