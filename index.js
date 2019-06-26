@@ -1,26 +1,70 @@
-const express = require('express');
-var app = require('express')();
-var http = require('http').createServer(app);
-var io = require('socket.io')(http);
+const express = require("express");
+const app = express();
+const http = require("http").createServer(app);
+const io = require("socket.io")(http);
+const randomFreeTone = require("./randomFreeTone")
+const unassignTone = require("./unassignTone")
 
-app.use(express.static('public'))
+app.use(express.static("public"));
 
-app.get('/', function(req, res){
-  //loads html
-  res.sendFile(__dirname + '/index.html');
+const connectedClients = () => {
+  return Object.keys(io.sockets.connected)
+};
+
+function capacity(req, res, next) {
+  console.log('capacity middleware')
+  if (connectedClients().length <= 4) {
+    next();
+  } else {
+    res.sendFile(__dirname + '/public/busy.html');
+  }
+};
+
+app.use(capacity);
+
+app.get("/", function(req, res, next) {
+  res.sendFile(__dirname + "/index.html");
 });
 
-// need routes for each AR tag to have separate colors?
+let tones = [
+  { name: "G", socket: null },
+  { name: "A", socket: null },
+  { name: "hiF", socket: null },
+  { name: "loF", socket: null },
+  { name: "C", socket: null },
+];
 
-io.on('connection', function(socket){
-  console.log('connection made');
-  socket.on('button pressed', data => {
-    
-    console.log(data);
-  })
+// keep clients from disconnecting
+function sendHeartbeat(){
+  setTimeout(sendHeartbeat, 8000);
+  io.sockets.emit('ping', { beat : 1 });
+}
+setTimeout(sendHeartbeat, 8000);
+
+io.on("connection", function(socket) {
+  console.log(connectedClients());
+  socket.emit("assignTone", randomFreeTone(tones, socket.id).name);
+  //client stores note in sessionStorage
+  console.log(tones);
+
+  socket.on("pressed", data => {
+    //client sends time and tone in data
+    console.log(socket.client.id, data);
+  });
+
+  socket.on("disconnect", function(socket) {
+    // check client id's remaining and free up available tones
+    unassignTone(connectedClients(), tones);
+    console.log(connectedClients());
+    console.log(tones);
+  });
 });
 
-http.listen(3000, function(socket){
-  console.log('listening on *:3000');
+app.listen(3000, () => {
+  console.log('app listening on 3000')
 });
 
+http.listen(3001, function(socket) {
+  console.log("io listening on 3001");
+  console.log(connectedClients());
+});
