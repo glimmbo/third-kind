@@ -58,10 +58,13 @@ io.on("connection", function(socket) {
     console.log(activeSequence);
     if (activeSequence.length === tones.length) {
       if (correctSequence(tones, activeSequence)) {
-        console.log('correct!'); // play win animation
+        console.log('correct!');
+        // play win animation
+        io.sockets.emit('correct', activeSequence)
       } else {
-        console.log('incorrect, resetting'); // flash all screens red
-        io.sockets.emit('incorrect', activeSequence) // play back pattern
+        io.sockets.emit('incorrect', activeSequence)
+        console.log('incorrect, resetting');
+        // play back pattern, red flash
         activeSequence = [];
       };
     }
