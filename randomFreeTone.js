@@ -1,22 +1,17 @@
 // let tones = [
-//   { name: "G", taken: false },
-//   { name: "A", taken: false },
-//   { name: "hiF", taken: false },
-//   { name: "loF", taken: false },
-//   { name: "C", taken: false },
+//   { tone: "G", socket: null },
+//   { tone: "A", socket: null },
+//   { tone: "hiF", socket: null },
+//   { tone: "loF", socket: null },
+//   { tone: "C", socket: null },
 // ];
 
-// works, but still need to limit connections to 5
 const randomFreeTone = (tonesArray, socketId) => {
-  let tone = tonesArray[Math.floor(Math.random() * tonesArray.length)];
-  if (tone.socket) {
-    console.log(tone.tone + " taken, re-running");
-    return randomFreeTone(tonesArray, socketId);
-  } else {
-    tone.socket = socketId;
-    console.log("assigned tone " + tone.tone + " to " + socketId);
-    return tone;
-  }
+  let remaining = tonesArray.filter(tone => !tone.socket);
+  let tone = remaining[Math.floor(Math.random() * remaining.length)];
+  tone.socket = socketId;
+  console.log("assigned tone " + tone.tone + " to " + socketId);
+  return tone;
 };
 
 // randomFreeTone(tones, 'user1');
@@ -24,7 +19,5 @@ const randomFreeTone = (tonesArray, socketId) => {
 // randomFreeTone(tones, 'user3');
 // randomFreeTone(tones, 'user4');
 // randomFreeTone(tones, 'user5');
-
-
 
 module.exports = randomFreeTone;

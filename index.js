@@ -12,6 +12,8 @@ const connectedClients = () => {
   return Object.keys(io.sockets.connected)
 };
 
+// goal: limit to 5 connected users
+// doesn't work..but still triggers sometimes?
 function capacity(req, res, next) {
   console.log('capacity middleware')
   if (connectedClients().length <= 4) {
@@ -20,8 +22,8 @@ function capacity(req, res, next) {
     res.sendFile(__dirname + '/public/busy.html');
   }
 };
-
 app.use(capacity);
+// ===
 
 app.get("/", function(req, res, next) {
   res.sendFile(__dirname + "/index.html");
@@ -42,9 +44,10 @@ let activeSequence = [];
 // keep clients from disconnecting
 function sendHeartbeat(){
   setTimeout(sendHeartbeat, 8000);
-  io.sockets.emit('ping', { beat : 1 });
+  io.sockets.emit('lub', 'stayin alive?');
 }
 setTimeout(sendHeartbeat, 8000);
+// ===
 
 io.on("connection", function(socket) {
   console.log(connectedClients());
@@ -59,12 +62,15 @@ io.on("connection", function(socket) {
     if (activeSequence.length === tones.length) {
       if (correctSequence(tones, activeSequence)) {
         console.log('correct!');
-        // play win animation
+        // client plays sequence, green flash
         io.sockets.emit('correct', activeSequence)
+        // alerts to aim camera back at marker
+        // redirects to A-frame page
+
       } else {
         io.sockets.emit('incorrect', activeSequence)
         console.log('incorrect, resetting');
-        // play back pattern, red flash
+        // client plays back pattern, red flash, then:
         activeSequence = [];
       };
     }
@@ -73,7 +79,6 @@ io.on("connection", function(socket) {
   socket.on("disconnect", function(socket) {
     // check client id's remaining and free up available tones
     unassignTone(connectedClients(), tones);
-    console.log(connectedClients());
     console.log(tones);
   });
 });

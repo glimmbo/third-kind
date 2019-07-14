@@ -14,7 +14,7 @@ body {
   background-color: grey;
   display: grid;
   height: 40vh;
-  width: 90vw;
+  max-width: 90vw;
   grid-template-columns: repeat(12, 1fr);
   grid-template-rows: repeat(6, 1fr);
 }
@@ -43,8 +43,6 @@ body.incorrect {
   height: 100%;
   width: 100%;
 }
-
-
 
 @keyframes glowYellow {
   50% {
