@@ -1,32 +1,34 @@
 // makes client socket connection to server
 const socket = io.connect('localhost:3001');
-let body = document.querySelector('body')
+let body = document.querySelector('body');
+let grid = document.querySelector('#grid');
+let hint = document.querySelector('#hint');
 // hacky event to keep connection active
 socket.on('lub', function(data){
   socket.emit('dub', 'stayin alive');
 });
+
 // server emits "assignTone" on connection
 let assignedTone;
-
 socket.on("assignTone", data => {
   sessionStorage.setItem("tone", data)
   assignedTone = sessionStorage.getItem("tone")
   console.log('assigned tone ' + assignedTone)
 })
-//plays the hint
-window.addEventListener('DOMContentLoaded', (event) => {
+
+// hint audio
+hint.addEventListener('click', (event) => {
   let fiveTones = new Audio('five-tones.wav');
-  async function playAudio() {
+  async function playTheFiveTones() {
     try {
       await fiveTones.play();
     } catch(err) {
       console.log(err)
     }
   }
-  playAudio();
+  playTheFiveTones();
 });
 
-// ===
 // eventually combine these two
 function lightUp(tone) {
   let light = document.querySelector(`#${tone}`)
@@ -37,7 +39,7 @@ function lightUp(tone) {
 }
 
 function playSound(tone) {
-  // Tone.js
+  // Tone.js?
 }
 // =======
 
@@ -45,7 +47,7 @@ function playSound(tone) {
 // when body pressed:
 function sendTone() {
   // stop accepting clicks
-  body.removeEventListener('click', sendTone);
+  grid.removeEventListener('click', sendTone);
   // emits assignedTone
   socket.emit('pressed', {
     time: Date.now(),
@@ -54,24 +56,24 @@ function sendTone() {
   // lights up on board (1s css)
   lightUp(assignedTone);
   // accept clicks again
-  body.addEventListener('click', sendTone);
+  grid.addEventListener('click', sendTone);
 }
 
 function backgroundFlash(correct) {
   if (correct) {
-    body.classList.add('correct');
-    setTimeout(() => body.classList.remove('correct'), 500);
+    grid.classList.add('correct');
+    setTimeout(() => grid.classList.remove('correct'), 500);
   } else {
-    body.classList.add('incorrect');
-    setTimeout(() => body.classList.remove('incorrect'), 500);
+    grid.classList.add('incorrect');
+    setTimeout(() => grid.classList.remove('incorrect'), 500);
   }
 }
 
-body.addEventListener('click', sendTone);
+grid.addEventListener('click', sendTone);
 
 function playSequence(toneArray) {
   // remove listener to block any input during playback
-  body.removeEventListener('click', sendTone);
+  grid.removeEventListener('click', sendTone);
   // could be modified to hint at musical timing via tone.js?
 
   // works, but duplicates a problem
@@ -96,19 +98,25 @@ function playSequence(toneArray) {
     // setTimeout(() => lightUp(tone), 5000)
 
   // resume listener, after playback
-  setTimeout(() => body.addEventListener('click', sendTone), 7000);
+  setTimeout(() => grid.addEventListener('click', sendTone), 7000);
 }
 
 socket.on('incorrect', activeSequence => {
   console.log(activeSequence, " is incorrect");
   // playback pattern, redflash
   playSequence(activeSequence);
-  setTimeout(() => backgroundFlash(false), 7000);
+  setTimeout(() => {
+    backgroundFlash(false);
+    // alert('If you can only play one tone...')
+  }, 7000);
 });
 
 socket.on('correct', activeSequence => {
   console.log(activeSequence, " is correct");
-  // playback pattern, green flash, load animation page (A-frame)
+  // playback pattern, green flash, server sends A-frame page
   playSequence(activeSequence);
-  setTimeout(() => backgroundFlash(true), 7000);
+  setTimeout(() => {
+    backgroundFlash(true);
+    // alert('Well done, now look back to the table');
+  }, 7000)
 });

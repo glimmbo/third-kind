@@ -1,6 +1,6 @@
 body {
   align-items: center;
-  background-color: black;
+  background: center / cover no-repeat url('./road.jpg') ;
   display: flex;
   flex-direction: column;
   height: 100vh;
@@ -11,10 +11,11 @@ body {
 }
 
 #grid {
-  background-color: grey;
+  background-color: rgb(63, 63, 63);
   display: grid;
-  height: 40vh;
-  max-width: 90vw;
+  height: 35vh;
+  margin-top: 4em;
+  width: 90vw;
   grid-template-columns: repeat(12, 1fr);
   grid-template-rows: repeat(6, 1fr);
 }
@@ -30,11 +31,11 @@ body {
   }
 }
 
-body.correct {
+#grid.correct {
   animation: correctFlash .5s;
 }
 
-body.incorrect {
+#grid.incorrect {
   animation: incorrectFlash .5s;
 }
 
@@ -83,4 +84,23 @@ body.incorrect {
 
 #C.pressed {
   animation: glowBlue 1s;
+}
+
+@font-face {
+  font-family: 'Close';
+  src: url('./ALIEE___.TTF');
+}
+
+#hint {
+  letter-spacing: .2em;
+  margin: 0;
+  text-align: center;
+  text-transform: uppercase;
+  font-family: Close, sans-serif;
+  font-size: 4em;
+  -webkit-text-stroke: 1px red;
+}
+
+#hint:active {
+  -webkit-text-fill-color: red;
 }

@@ -3,7 +3,9 @@
     <title>Who are you people?</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.dev.js"></script>
     <link rel="stylesheet" href="/index.css">
-    <link rel="manifest" href="manifest.json">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="viewport" content="width=device-width">
+    <!-- <meta name="viewport" content="height=device-height"> -->
   </head>
   <body>
     <div id="grid">
@@ -12,7 +14,7 @@
       <div class="rect"></div>
       <div class="rect"></div>
       <div class="rect"></div>
-      <div id= "C" class="rect">Blue, 5, C</div>
+      <div id= "C" class="rect"></div>
       <div class="rect"></div>
       <div class="rect"></div>
       <div class="rect"></div>
@@ -38,13 +40,11 @@
       <div class="rect"></div>
       <div class="rect"></div>
       <div class="rect"></div>
-      <div id="hiF" class="rect">Purple, 3, hiF</div>
+      <div id="hiF" class="rect"></div>
       <div class="rect"></div>
-      <div id="G" class="rect">Yellow, 1, G</div>
+      <div id="G" class="rect"></div>
       <div class="rect"></div>
-      <div id="A" class="rect">Red, 2, A</div>
-      <div class="rect"></div>
-      <div class="rect"></div>
+      <div id="A" class="rect"></div>
       <div class="rect"></div>
       <div class="rect"></div>
       <div class="rect"></div>
@@ -57,9 +57,9 @@
       <div class="rect"></div>
       <div class="rect"></div>
       <div class="rect"></div>
-      <div id="loF" class="rect">Yellow, 4, lowF</div>
       <div class="rect"></div>
       <div class="rect"></div>
+      <div id="loF" class="rect"></div>
       <div class="rect"></div>
       <div class="rect"></div>
       <div class="rect"></div>
@@ -79,6 +79,15 @@
       <div class="rect"></div>
       <div class="rect"></div>
       <div class="rect"></div>
+      <div class="rect"></div>
+      <div class="rect"></div>
+    </div>
+    <br>
+    <br>
+    <div >
+      <h1 id="hint">
+        Who are you people?
+      </h1>
     </div>
   </body>
   <script src="/connect.js"></script>

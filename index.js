@@ -8,26 +8,33 @@ const correctSequence = require("./correctSequence")
 
 app.use(express.static("public"));
 
+app.get("/", function(req, res, next) {
+  res.sendFile(__dirname + "/index.html");
+});
+
+function sendHeartbeat(){
+  setTimeout(sendHeartbeat, 8000);
+  io.sockets.emit('lub', 'stayin alive?');
+}
+setTimeout(sendHeartbeat, 8000);
+// ===
+
 const connectedClients = () => {
   return Object.keys(io.sockets.connected)
 };
 
 // goal: limit to 5 connected users
 // doesn't work..but still triggers sometimes?
-function capacity(req, res, next) {
-  console.log('capacity middleware')
-  if (connectedClients().length <= 4) {
-    next();
-  } else {
-    res.sendFile(__dirname + '/public/busy.html');
-  }
-};
-app.use(capacity);
+// function capacity(req, res, next) {
+//   console.log('capacity middleware')
+//   if (connectedClients().length <= 4) {
+//     next();
+//   } else {
+  //     res.sendFile(__dirname + '/public/busy.html');
+  //   }
+  // };
+// app.use(capacity);
 // ===
-
-app.get("/", function(req, res, next) {
-  res.sendFile(__dirname + "/index.html");
-});
 
 // array of correct sequence and user assignments
 let tones = [
@@ -42,12 +49,6 @@ let tones = [
 let activeSequence = [];
 
 // keep clients from disconnecting
-function sendHeartbeat(){
-  setTimeout(sendHeartbeat, 8000);
-  io.sockets.emit('lub', 'stayin alive?');
-}
-setTimeout(sendHeartbeat, 8000);
-// ===
 
 io.on("connection", function(socket) {
   console.log(connectedClients());
@@ -77,7 +78,7 @@ io.on("connection", function(socket) {
   });
 
   socket.on("disconnect", function(socket) {
-    // check client id's remaining and free up available tones
+    // check client ids remaining and free up available tones
     unassignTone(connectedClients(), tones);
     console.log(tones);
   });
