@@ -2,10 +2,13 @@
   <head>
     <title>Who are you people?</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.dev.js"></script>
-    <link rel="stylesheet" href="/index.css">
-    <link rel="manifest" href="/manifest.json">
+    <link rel="stylesheet" href="index.css">
+    <link rel="manifest" href="manifest.json">
     <meta name="viewport" content="width=device-width">
-    <!-- <meta name="viewport" content="height=device-height"> -->
+    <script src="https://unpkg.com/tone"></script>
+    <!-- ios support -->
+    <link rel="apple-touch-icon" href="/public/ufo.png">
+    <meta name="apple-mobile-web-app-status-bar" content="black">
   </head>
   <body>
     <div id="grid">
@@ -14,7 +17,7 @@
       <div class="rect"></div>
       <div class="rect"></div>
       <div class="rect"></div>
-      <div id= "C" class="rect"></div>
+      <div id="C4" class="rect"></div>
       <div class="rect"></div>
       <div class="rect"></div>
       <div class="rect"></div>
@@ -40,13 +43,11 @@
       <div class="rect"></div>
       <div class="rect"></div>
       <div class="rect"></div>
-      <div id="hiF" class="rect"></div>
+      <div id="F4" class="rect"></div>
       <div class="rect"></div>
-      <div id="G" class="rect"></div>
+      <div id="G4" class="rect"></div>
       <div class="rect"></div>
-      <div id="A" class="rect"></div>
-      <div class="rect"></div>
-      <div class="rect"></div>
+      <div id="A4" class="rect"></div>
       <div class="rect"></div>
       <div class="rect"></div>
       <div class="rect"></div>
@@ -59,7 +60,9 @@
       <div class="rect"></div>
       <div class="rect"></div>
       <div class="rect"></div>
-      <div id="loF" class="rect"></div>
+      <div class="rect"></div>
+      <div class="rect"></div>
+      <div id="F3" class="rect"></div>
       <div class="rect"></div>
       <div class="rect"></div>
       <div class="rect"></div>
@@ -90,5 +93,5 @@
       </h1>
     </div>
   </body>
-  <script src="/connect.js"></script>
+  <script src="connect.js"></script>
 </html>

@@ -66,23 +66,23 @@ body {
   }
 }
 
-#G.pressed {
+#G4.pressed {
   animation: glowYellow 1s;
 }
 
-#A.pressed {
+#A4.pressed {
   animation: glowRed 1s;
 }
 
-#hiF.pressed {
+#F4.pressed {
   animation: glowPurple 1s;
 }
 
-#loF.pressed {
+#F3.pressed {
   animation: glowYellow 1s;
 }
 
-#C.pressed {
+#C4.pressed {
   animation: glowBlue 1s;
 }
 

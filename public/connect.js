@@ -1,3 +1,10 @@
+//service worker registration:
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/sw.js')
+    .then( (reg) => console.log("service worker registered", reg))
+    .catch( (err) => console.log("service worker not registerd", err))
+}
+
 // makes client socket connection to server
 const socket = io.connect('localhost:3001');
 let body = document.querySelector('body');
@@ -29,34 +36,31 @@ hint.addEventListener('click', (event) => {
   playTheFiveTones();
 });
 
-// eventually combine these two
-function lightUp(tone) {
-  let light = document.querySelector(`#${tone}`)
+//Tone Setup
+let synth = new Tone.Synth().chain(Tone.Master);
+Tone.Transport.bpm.value = 55
+
+function lightUpAndPlay(tone) {
+  let light = document.getElementById(tone)
   light.classList.add('pressed');
+  synth.triggerAttackRelease(tone, '8n');
   setTimeout(() => {
+    Tone.Transport.stop();
     light.classList.remove('pressed');
+    console.log(Tone.now());
   }, 1000);
 }
 
-function playSound(tone) {
-  // Tone.js?
-}
-// =======
-
-
-// when body pressed:
+// when grid pressed:
 function sendTone() {
-  // stop accepting clicks
-  grid.removeEventListener('click', sendTone);
-  // emits assignedTone
-  socket.emit('pressed', {
+  grid.removeEventListener('click', sendTone);// stop accepting clicks
+  socket.emit('pressed', { // emits assignedTone
     time: Date.now(),
     tone: assignedTone,
   });
-  // lights up on board (1s css)
-  lightUp(assignedTone);
-  // accept clicks again
-  grid.addEventListener('click', sendTone);
+  console.log(Tone.now())
+  lightUpAndPlay(assignedTone); // takes 1s (timeout)
+  grid.addEventListener('click', sendTone); // accept clicks again
 }
 
 function backgroundFlash(correct) {
@@ -71,52 +75,58 @@ function backgroundFlash(correct) {
 
 grid.addEventListener('click', sendTone);
 
-function playSequence(toneArray) {
+function playSequence(toneArray, correct) {
   // remove listener to block any input during playback
   grid.removeEventListener('click', sendTone);
-  // could be modified to hint at musical timing via tone.js?
 
-  // works, but duplicates a problem
-  toneArray.forEach((tone, i) => {
-    setTimeout(() => {
-      lightUp(tone);
-    }, (1000 * (i + 1)));
-  });
-  
-  //doesn't work
-  // for (let i = 0; i < tonesArray.length; i++) {
-  //  const tone = tonesArray[i];
+  // works, but duplicates a problem, closure?
+  // toneArray.forEach((tone, i) => {
   //   setTimeout(() => {
-  //     lightUp(tone);
+  //     lightUpAndPlay(tone);
   //   }, (1000 * (i + 1)));
-  // }
-    // expect:
-    // setTimeout(() => lightUp(tone), 1000)
-    // setTimeout(() => lightUp(tone), 2000)
-    // setTimeout(() => lightUp(tone), 3000)
-    // setTimeout(() => lightUp(tone), 4000)
-    // setTimeout(() => lightUp(tone), 5000)
+  // });
 
-  // resume listener, after playback
-  setTimeout(() => grid.addEventListener('click', sendTone), 7000);
+  //Better. Using Tone.js events:
+  let fivetones = new Tone.Sequence(
+    // callback for each event (note)
+    (time, note) => {
+      console.log(toneArray);
+      console.log(time,note);
+      synth.triggerAttackRelease(note, '8n', time);
+      if (note === toneArray[4]) { // if last note
+        Tone.Transport.stop(); // wait for it to finish (1 whole note)
+        backgroundFlash(correct); // flash correct/incorrect
+        if (!correct) { //if wrong
+          // add listener to try again
+          grid.addEventListener('click', sendTone);
+        }
+      }
+    },
+    // array of events (notes)
+    [
+      null,
+      [
+        toneArray[0],
+        toneArray[1],
+        toneArray[2],
+        toneArray[3]
+      ],
+      toneArray[4]
+    ]
+  )
+  fivetones.loop = 0;
+  Tone.Transport.start("+0.1");
+  fivetones.start();
 }
 
 socket.on('incorrect', activeSequence => {
   console.log(activeSequence, " is incorrect");
   // playback pattern, redflash
-  playSequence(activeSequence);
-  setTimeout(() => {
-    backgroundFlash(false);
-    // alert('If you can only play one tone...')
-  }, 7000);
+  playSequence(activeSequence, false);
 });
 
 socket.on('correct', activeSequence => {
   console.log(activeSequence, " is correct");
   // playback pattern, green flash, server sends A-frame page
-  playSequence(activeSequence);
-  setTimeout(() => {
-    backgroundFlash(true);
-    // alert('Well done, now look back to the table');
-  }, 7000)
+  playSequence(activeSequence, true);
 });

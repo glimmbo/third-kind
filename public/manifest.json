@@ -1,4 +1,16 @@
 {
-  "display":      "standalone", 
-  "orientation":  "landscape"
+  "name": "Five Tones",
+  "short_name": "5 Tones",
+  "display": "standalone", 
+  "orientation":  "landscape",
+  "background_color": "black",
+  "start_url": "/index.html",
+  "theme_color": "black",
+  "icons": [
+    {
+      "src": "/ufo.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    }
+  ]
 }

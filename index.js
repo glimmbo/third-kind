@@ -38,11 +38,11 @@ const connectedClients = () => {
 
 // array of correct sequence and user assignments
 let tones = [
-  { tone: "G", socket: null },
-  { tone: "A", socket: null },
-  { tone: "hiF", socket: null },
-  { tone: "loF", socket: null },
-  { tone: "C", socket: null },
+  { tone: "G4", socket: null },
+  { tone: "A4", socket: null },
+  { tone: "F4", socket: null },
+  { tone: "F3", socket: null },
+  { tone: "C4", socket: null },
 ];
 
 // array of active sequence (pattern attempt)
