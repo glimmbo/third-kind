@@ -1,0 +1,110 @@
+body {
+  align-items: center;
+  background: center / cover no-repeat url("assets/road.jpg");
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+}
+
+#grid {
+  background-color: rgb(34, 33, 33);
+  display: grid;
+  height: 20vh;
+  margin-top: 4em;
+  width: 90vw;
+  grid-template-columns: repeat(12, 1fr);
+  grid-template-rows: repeat(6, 1fr);
+}
+
+@keyframes correctFlash {
+  50% {
+    background-color: lightgreen;
+  }
+}
+@keyframes incorrectFlash {
+  50% {
+    background-color: red;
+  }
+}
+
+#grid.correct {
+  animation: correctFlash 0.5s;
+}
+
+#grid.incorrect {
+  animation: incorrectFlash 0.5s;
+}
+
+.rect {
+  border: 1px solid black;
+  height: 100%;
+  width: 100%;
+}
+
+@keyframes glowYellow {
+  50% {
+    background-color: yellow;
+  }
+}
+@keyframes glowRed {
+  50% {
+    background-color: red;
+  }
+}
+@keyframes glowBlue {
+  50% {
+    background-color: blue;
+  }
+}
+@keyframes glowPurple {
+  50% {
+    background-color: purple;
+  }
+}
+
+#G4.pressed {
+  animation: glowYellow 1s;
+}
+
+#A4.pressed {
+  animation: glowRed 1s;
+}
+
+#F4.pressed {
+  animation: glowPurple 1s;
+}
+
+#F3.pressed {
+  animation: glowYellow 1s;
+}
+
+#C4.pressed {
+  animation: glowBlue 1s;
+}
+
+@font-face {
+  font-family: "Close";
+  src: url("assets/ALIEE___.TTF");
+}
+
+#hint {
+  letter-spacing: 0.2em;
+  margin: 0;
+  text-align: center;
+  text-transform: uppercase;
+  font-family: Close, sans-serif;
+  font-size: 4em;
+  -webkit-text-stroke: 1px red;
+}
+
+#hint:active {
+  -webkit-text-fill-color: red;
+}
+
+#qr canvas {
+  /* height: 400px; */
+}

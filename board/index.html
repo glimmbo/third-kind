@@ -1,0 +1,110 @@
+<html>
+  <head>
+    <title>Who are you people?</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.dev.js"></script>
+    <link rel="stylesheet" href="index.css" />
+    <link rel="manifest" href="manifest.json" />
+    <meta name="viewport" content="width=device-width" />
+    <script src="https://unpkg.com/tone"></script>
+    <script src="https://unpkg.com/qrcode"></script>
+    <!-- <script src="qrcode.min.js.map"></script> -->
+    <!-- ios support -->
+    <link rel="apple-touch-icon" href="assets/ufo.png" />
+    <meta name="apple-mobile-web-app-status-bar" content="black" />
+  </head>
+  <body>
+    <div id="grid">
+      <div class="rect"></div>
+      <div class="rect"></div>
+      <div class="rect"></div>
+      <div class="rect"></div>
+      <div class="rect"></div>
+      <div id="C4" class="rect"></div>
+      <div class="rect"></div>
+      <div class="rect"></div>
+      <div class="rect"></div>
+      <div class="rect"></div>
+      <div class="rect"></div>
+      <div class="rect"></div>
+      <div class="rect"></div>
+      <div class="rect"></div>
+      <div class="rect"></div>
+      <div class="rect"></div>
+      <div class="rect"></div>
+      <div class="rect"></div>
+      <div class="rect"></div>
+      <div class="rect"></div>
+      <div class="rect"></div>
+      <div class="rect"></div>
+      <div class="rect"></div>
+      <div class="rect"></div>
+      <div class="rect"></div>
+      <div class="rect"></div>
+      <div class="rect"></div>
+      <div class="rect"></div>
+      <div class="rect"></div>
+      <div class="rect"></div>
+      <div class="rect"></div>
+      <div id="F4" class="rect"></div>
+      <div class="rect"></div>
+      <div id="G4" class="rect"></div>
+      <div class="rect"></div>
+      <div id="A4" class="rect"></div>
+      <div class="rect"></div>
+      <div class="rect"></div>
+      <div class="rect"></div>
+      <div class="rect"></div>
+      <div class="rect"></div>
+      <div class="rect"></div>
+      <div class="rect"></div>
+      <div class="rect"></div>
+      <div class="rect"></div>
+      <div class="rect"></div>
+      <div class="rect"></div>
+      <div class="rect"></div>
+      <div class="rect"></div>
+      <div class="rect"></div>
+      <div id="F3" class="rect"></div>
+      <div class="rect"></div>
+      <div class="rect"></div>
+      <div class="rect"></div>
+      <div class="rect"></div>
+      <div class="rect"></div>
+      <div class="rect"></div>
+      <div class="rect"></div>
+      <div class="rect"></div>
+      <div class="rect"></div>
+      <div class="rect"></div>
+      <div class="rect"></div>
+      <div class="rect"></div>
+      <div class="rect"></div>
+      <div class="rect"></div>
+      <div class="rect"></div>
+      <div class="rect"></div>
+      <div class="rect"></div>
+      <div class="rect"></div>
+      <div class="rect"></div>
+      <div class="rect"></div>
+      <div class="rect"></div>
+    </div>
+    <br />
+    <br />
+    <div>
+      <h1 id="hint">Who are you people?</h1>
+    </div>
+    <div id="qr">
+      <canvas id="canvas"></canvas>
+    </div>
+  </body>
+  <script src="board.js"></script>
+  <script>
+    QRCode.toCanvas(
+      document.getElementById("canvas"),
+      "sample text",
+      function (error) {
+        if (error) console.error(error)
+        console.log("qr success!")
+      },
+    )
+  </script>
+</html>
