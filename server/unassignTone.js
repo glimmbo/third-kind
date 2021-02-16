@@ -15,18 +15,17 @@
 //   { name: 'C', socket: null }
 // ];
 
-
 function unassignTone(connectedClients, tonesArray) {
   tonesArray.forEach(tone => {
     if (tone.socket) {
       if (!connectedClients.includes(tone.socket)) {
-        tone.socket = null;
+        tone.socket = null
       }
     }
-  });
-  return tonesArray;
+  })
+  return tonesArray
 }
 
 // console.log(unassignTone(a, b));
 
-module.exports = unassignTone;
+module.exports = unassignTone
