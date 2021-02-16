@@ -5,8 +5,8 @@ const io = require("socket.io")(server)
 
 //helper functions
 const randomFreeTone = require("./randomFreeTone")
-const unassignTone = require("./src/unassignTone")
-const correctSequence = require("./correctSequence")
+const unassignTone = require("./unassignTone")
+const correctSequence = require("./correctSequencecorrectSequence")
 
 //keeps connections active
 // function sendHeartbeat() {
